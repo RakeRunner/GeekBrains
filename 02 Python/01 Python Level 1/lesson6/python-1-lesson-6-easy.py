@@ -125,3 +125,9 @@ class PoliceCar2(BaseCar):
         self._color = 'PoliceColor'
         self._is_police = True
         self.direction = 'West'
+
+my_car1 = TownCar2('Golf')
+print(my_car1.get_color())
+my_car2 = PoliceCar2('Crysler')
+print(my_car2.get_color())
+print(my_car2.get_police())
