@@ -22,6 +22,7 @@ class Person:
         self._opponent_armor = 1.0
         self._opponent_health = 1.0
         self._opponent_damage = 1.0
+        self._attack_result = 0.0
 
     def armor(self):
         return  self._armor
@@ -36,12 +37,14 @@ class Person:
         self._health += diff
 
     def attack(self, opponent):
-        print('{} атакует {}!'.format(self.name, opponent.name))
-        self._opponent_ = opponent.armor()
+        print('Игрок {} атакует игрока {}!'.format(self.name, opponent.name))
+        self._calc_damage(opponent)
+        opponent.mod_health(-self._attack_result)
+        print('Игрок {} нанес игроку {} удар с силой {}!'.format(self.name, opponent.name, round(self._attack_result, 2)))
+        print('У игрока {} осталось {} единиц здоровья'.format(opponent.name, round(opponent.health(), 2)))
 
-    def _calc_damage(self, damage):
-        health -= damage / armor
-
+    def _calc_damage(self, opponent):
+        self._attack_result = self._damage / opponent.armor()
 
 
 class Player(Person):
@@ -61,19 +64,12 @@ class Player(Person):
 
     def _calc_damage(self, opponent):
         if self._random_success:
-            self._attack_result = (random.randint(50, 100) / 100) * self._damage / opponent.armor()
+            self._attack_result = round((random.randint(50, 100) / 100) * self._damage / opponent.armor(), 2)
         else:
             self._attack_result = self._damage / opponent.armor()
 
     def attack_result(self, opponent):
         return self._attack_result
-
-    def attack(self, opponent):
-        print('Игрок {} атакует игрока {}!'.format(self.name, opponent.name))
-        self._calc_damage(opponent)
-        opponent.mod_health(-self._attack_result)
-        print('Игрок {} нанес игроку {} удар с силой {}!'.format(self.name, opponent.name, self._attack_result))
-        print('У игрока {} осталось {} единиц здоровья'.format(opponent.name, opponent.health()))
 
 class Enemy(Person):
     def __init__(self,name):
@@ -99,28 +95,9 @@ class Enemy(Person):
     def attack_result(self, opponent):
         return self._attack_result
 
-    def attack(self, opponent):
-        print('Игрок {} атакует игрока {}!'.format(self.name, opponent.name))
-        self._calc_damage(opponent)
-        opponent.mod_health(-self._attack_result)
-        print('Игрок {} нанес игроку {} удар с силой {}!'.format(self.name, opponent.name, self._attack_result))
-        print('У игрока {} осталось {} единиц здоровья'.format(opponent.name, opponent.health()))
-
 class Fight():
     def __init__(self):
         self._attack_result = 0.0
-        # self._current = 0 # здесь была попытка определять первого игрока случайным образом, и далее бегать по списку персонажей
-        # self._chars = [] # в цикле, но она провалилась из-за полной нечитаемости получающегося кода
-
-    # def define_chars(self,Player, Enemy):
-    #     self._chars = [Player, Enemy]
-
-    # def define_first_player(self):
-    #     i = random.random()
-    #     if i > 0.5:
-    #         self._current = 1
-    #     else:
-    #         self._current = 0
 
     def start(self, Player, Enemy):
         while Player.health() >= 0 and Enemy.health() >= 0:
@@ -146,5 +123,8 @@ my_player = Player(input('Как зовут тебя, юный падаван? :
 my_enemy = Enemy(input('Как соперника зовут твоего? :'))
 
 game = Fight()
-
-print(game.start(my_player, my_enemy))
+i = random.random()
+if i > 0.5:
+    print(game.start(my_player, my_enemy))
+else:
+    print(game.start(my_enemy, my_player))
