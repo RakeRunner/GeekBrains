@@ -19,9 +19,6 @@ class Person:
         self._armor = 1.2
         self._health = 100
         self._damage = 35
-        self._opponent_armor = 1.0
-        self._opponent_health = 1.0
-        self._opponent_damage = 1.0
         self._attack_result = 0.0
 
     def armor(self):
@@ -53,8 +50,6 @@ class Player(Person):
         self._armor = 1.2
         self._health = 100
         self._damage = 50
-        self._opponent_armor = 1.0
-        self._opponent_health = 1.0
         self._attack_result = 1.0
         self._random_success = True
         self._is_redhat = False
@@ -77,8 +72,6 @@ class Enemy(Person):
         self._armor = 1.2
         self._health = 100
         self._damage = 50
-        self._opponent_armor = 1.0
-        self._opponent_health = 1.0
         self._attack_result = 1.0
         self._random_success = True
         self._is_wolf = False
