@@ -61,17 +61,19 @@ class LottoCard:
 
     def generate_card(self):
         self._card = random.sample(self._pouch, 15)
-        self._card.sort()
-        self._card1 = self._card[0:5]
-        self._card2 = self._card[5:10]
-        self._card3 = self._card[10:15]
+        self._line1 = self._card[0:5]
+        self._line2 = self._card[5:10]
+        self._line3 = self._card[10:15]
+        self._line1.sort()
+        self._line2.sort()
+        self._line3.sort()
 
         for i in range(0, 4):
-            self._card1.insert(random.randint(1,len(self._card1)), '  ')
-            self._card2.insert(random.randint(1, len(self._card2)), '  ')
-            self._card3.insert(random.randint(1, len(self._card3)), '  ')
+            self._line1.insert(random.randint(1, len(self._line1)), '  ')
+            self._line2.insert(random.randint(1, len(self._line2)), '  ')
+            self._line3.insert(random.randint(1, len(self._line3)), '  ')
 
-        self._card = self._card1 + self._card2 + self._card3
+        self._card = self._line1 + self._line2 + self._line3
 
     def print_card(self):
         if self._is_player:
