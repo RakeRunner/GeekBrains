@@ -75,7 +75,7 @@ class LottoCard:
 
         self._card = self._line1 + self._line2 + self._line3
 
-    def print_card(self):
+    def print(self):
         if self._is_player:
             print('----- Ваша карточка -------')
         else:
@@ -118,35 +118,37 @@ class LottoGame():
         self._computer_card.set_player(False)
         self._pouch = LottoPouch()
 
+    def _choice(self, barrel):
+        choice = ''
+        while choice != 'Y' and choice != 'N':
+            choice = input('Зачеркнуть цифру? (Y/N)').upper()
+            if choice != 'Y' and choice != 'N':
+                print('Некорректный ввод.')
+        if choice == 'Y':
+            if self._player_card.is_in(barrel) >= 0:
+                self._player_card.cross_out(barrel)
+                return True
+            else:
+                return False
+        if choice == 'N':
+            if self._player_card.is_in(barrel) < 0:
+                return True
+            else:
+                return False
+
     def start(self):
         while len(self._pouch) > 1:
-            self._player_card.print_card()
-            self._computer_card.print_card()
+            self._player_card.print()
+            self._computer_card.print()
             barrel = self._pouch.get_barrel()
             print('Ваш ход. Выпал бочонок с номером {}.'.format(barrel))
-
-            choice = ''
-            while choice != 'Y' and choice != 'N':
-                choice = input('Зачеркнуть цифру? (Y/N)').upper()
-                if choice != 'Y' and choice != 'N':
-                    print('Некорректный ввод.')
-            if choice == 'Y':
-                if self._player_card.is_in(barrel) >= 0:
-                    print('Правильно! Продолжаем играть.')
-                    self._player_card.cross_out(barrel)
-                    self._player_card.print_card()
-                    self._computer_card.print_card()
-                else:
-                    print('Неправильно! Вы проиграли.')
-                    break
-            if choice == 'N':
-                if self._player_card.is_in(barrel) < 0:
-                    print('Правильно! Продолжаем играть.')
-                else:
-                    print('Неправильно! Вы проиграли.')
-                    break
-                self._player_card.print_card()
-                self._computer_card.print_card()
+            if self._choice(barrel):
+                print('Правильно! Продолжаем играть.')
+                self._player_card.print()
+                self._computer_card.print()
+            else:
+                print('Неправильно! Вы проиграли.')
+                return 0
             barrel = self._pouch.get_barrel()
             print('Ход компьютера. Выпал бочонок с номером {}.'.format(barrel))
             if self._computer_card.is_in(barrel) > 0:
@@ -156,7 +158,7 @@ class LottoGame():
                 print('Компьютер продолжает игру.')
 
             input('В мешочке осталось {} бочонков. Нажмите Enter для продолжения игры.'.format(len(self._pouch)))
-        print('Игра окончена. В машочке осталось {} бочонков.'.format(len(self._pouch)))
+        print('Игра окончена. В мешочке осталось {} бочонков.'.format(len(self._pouch)))
 
 my_game = LottoGame()
 my_game.start()
